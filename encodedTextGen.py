@@ -18,7 +18,7 @@ import tensorflow_datasets as tfds
 
 run = wandb.init(project="sttextgen")
 config = run.config
-config.batch_size = 512
+config.batch_size = 640
 config.file = r"C:\Datasets\Text\Stranger Things\Season 1\1.txt"
 config.maxlen = 128 #Len of sliding window
 config.step = 3 #The amount of characters per step
@@ -66,6 +66,7 @@ for i, sentence in enumerate(sentences):
 
 #Creating Model
 model = Sequential()
+model.add(Bidirectional(LSTM(config.rememberChars, input_shape=(config.maxlen, len(chars)), return_sequences=True)))
 model.add(Bidirectional(LSTM(config.rememberChars, input_shape=(config.maxlen, len(chars)), return_sequences=True)))
 model.add(Bidirectional(LSTM(config.rememberChars, input_shape=(config.maxlen, len(chars)))))
 model.add(Dropout(0.4))
