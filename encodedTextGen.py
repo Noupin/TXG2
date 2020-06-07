@@ -18,11 +18,11 @@ import tensorflow_datasets as tfds
 
 run = wandb.init(project="sttextgen")
 config = run.config
-config.batch_size = 640
+config.batch_size = 512
 config.file = r"C:\Datasets\Text\Stranger Things\Season 1\1.txt"
 config.maxlen = 128 #Len of sliding window
 config.step = 3 #The amount of characters per step
-config.epochs = 10
+config.epochs = 400
 config.charsGen = 200
 config.rememberChars = 128
 config.embedding_dims = 100
@@ -70,11 +70,9 @@ model.add(Bidirectional(LSTM(config.rememberChars, input_shape=(config.maxlen, l
 model.add(Bidirectional(LSTM(config.rememberChars, input_shape=(config.maxlen, len(chars)), return_sequences=True)))
 model.add(Bidirectional(LSTM(config.rememberChars, input_shape=(config.maxlen, len(chars)))))
 model.add(Dropout(0.4))
-model.add(Dense(128, activation='relu'))
+model.add(Dense(80, activation='relu'))
 model.add(Dropout(0.4))
-model.add(Dense(86, activation='relu'))
-model.add(Dropout(0.4))
-model.add(Dense(len(chars), activation='sigmoid'))#softmax
+model.add(Dense(len(chars), activation='softmax'))#softmax
 model.compile(loss='categorical_crossentropy', optimizer="adam")#rmsprop
 
 
@@ -120,7 +118,7 @@ try:
     model.fit(x, y, batch_size=config.batch_size, epochs=config.epochs, callbacks=[WandbCallback()])
             #epochs=config.epochs, callbacks=[SampleText(), WandbCallback()])
     model.summary()
-    model.save(rf"C:\Coding\Python\ML\Text\Models\STS1_CharGen_{config.batch_size}Batch_{config.maxlen}Maxlen_{config.rememberChars}Remem_{config.epochs}Epochs.model")
+    model.save(rf"C:\Coding\Models\textModels\STS1_SyllGen_{config.batch_size}Batch_{config.maxlen}Maxlen_{config.rememberChars}Remem_{config.epochs}Epochs.model")
 except:
-    model.save(rf"C:\Coding\Python\ML\Text\Models\STS1_CharGen_{config.batch_size}Batch_{config.maxlen}Maxlen_{config.rememberChars}Remem_{config.epochs}Epochs.model")
+    model.save(rf"C:\Coding\Models\textModels\STS1_SyllGen_{config.batch_size}Batch_{config.maxlen}Maxlen_{config.rememberChars}Remem_{config.epochs}Epochs.model")
 #LSTM are very good for text generation to remember more than 5 state back unlike SimpleRNN

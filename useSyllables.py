@@ -64,7 +64,7 @@ for i, sentence in enumerate(sentences):
     y[i, char_indices[next_chars[i]]] = 1
 
 #Creating Model
-model = keras.models.load_model(r"C:\Coding\Python\ML\Text\Models\STS1_CharGen_512Batch_128Maxlen_128Remem_450Epochs.model")
+model = keras.models.load_model(r"C:\Coding\Models\textModels\STS1_CharGen_512Batch_128Maxlen_128Remem_450Epochs.model")
 
 
 def sample(preds, temperature=1.0):
